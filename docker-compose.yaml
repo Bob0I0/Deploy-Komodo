@@ -6,6 +6,7 @@ services:
       - ./laravel/src:/var/www
     networks:
       - komodo
+    command: php-fpm -g 'daemon off;' 
 
   mysql:
     image: mysql:8
@@ -20,7 +21,8 @@ services:
       - komodo
 
   nginx:
-    image: nginx:latest
+    build: 
+      context: ./nginx  
     container_name: laravel_nginx
     ports:
       - "8080:80"
@@ -31,7 +33,6 @@ services:
     depends_on:
       - app
       - mysql
-
 volumes:
   mysql_data:
 
