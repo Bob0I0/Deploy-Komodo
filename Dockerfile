@@ -24,15 +24,15 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Mengkopi file Composer (untuk menginstal dependensi)
 # File ini akan di-copy saat build, memastikan environment siap untuk Composer Install
-COPY src/composer.json ./
-COPY src/composer.lock ./
+COPY laravel/src/composer.json ./
+COPY laravel/src/composer.lock ./
 
 # Menginstal dependensi PHP
 # Menggunakan --no-dev untuk build produksi atau tanpa flag untuk build development/testing
 RUN composer install --no-dev --optimize-autoloader
 
 # Mengkopi semua file aplikasi Laravel lainnya
-COPY src .
+COPY laravel/src .
 
 # Membuat folder cache/storage yang dibutuhkan dan mengatur izin (penting!)
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
