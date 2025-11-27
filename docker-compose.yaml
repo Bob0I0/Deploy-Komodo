@@ -8,17 +8,27 @@ services:
       - komodo
     command: php-fpm -g 'daemon off;' 
 
-  mysql:
-    image: mysql:8
-    container_name: laravel_mysql
+  db:
+    image: mysql:latest
     restart: always
     environment:
-      MYSQL_DATABASE: laravel
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: orangit
+      MYSQL_DATABASE: komodo
+      MYSQL_USER: dewo
+      MYSQL_PASSWORD: orangit
     volumes:
-      - mysql_data:/var/lib/mysql
-    networks:
-      - komodo
+      - /var/lib/komodo/mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"
+  
+    phpmyadmin:
+      image: phpmyadmin:latest
+      restart: always
+      ports:
+        - "8001:80"
+      environment:
+        PMA_HOST: db
+        PMA_PORT: 3306
 
   nginx:
     build: 
