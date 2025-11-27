@@ -1,21 +1,30 @@
 services:
   app:
-    build: . 
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: laravel_app
+    ports:
+      - "8000:8000"
     volumes:
-      - ./laravel/src:/var/www
-    networks:
-      - komodo
-    command: php-fpm -g 'daemon off;' 
+      - ./laravel/src:/var/www/html
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=laravel
+      - DB_USERNAME=laraveluser
+      - DB_PASSWORD=laravelpass
 
   db:
     image: mysql:latest
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: orangit
+      MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: komodo
-      MYSQL_USER: dewo
-      MYSQL_PASSWORD: orangit
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
     volumes:
       - /var/lib/komodo/mysql:/var/lib/mysql
     ports:
@@ -35,7 +44,7 @@ services:
       context: ./nginx  
     container_name: laravel_nginx
     ports:
-      - "8080:80"
+      - "8888:80"
     volumes:
       - ./laravel/src:/var/www
     networks:
