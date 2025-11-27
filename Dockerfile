@@ -16,10 +16,6 @@ RUN apt-get update && apt-get install -y \
 
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
-# Kustomisasi php.ini (Asumsi file php.ini ada di root repositori)
-# Jika Anda tidak memiliki file ini, hapus baris ini.
-COPY php.ini /usr/local/etc/php/
-
 # Instalasi Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
