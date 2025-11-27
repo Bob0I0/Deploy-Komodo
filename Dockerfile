@@ -19,17 +19,14 @@ RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 # Instalasi Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# --- SETUP APLIKASI LARAVEL (kode aplikasi harus di commit ke Git) ---
-
-# Salin seluruh kode Laravel ke dalam container (termasuk artisan dan composer.json)
-# Menggunakan path yang benar: laravel/src
+# Salin source code Laravel ke dalam container
+# Note: Since this is built from the root context, we copy relative to the build context.
 COPY laravel/src .
 
-# Instal dependensi PHP
-# RUN composer install --no-dev --optimize-autoloader
-# Jika Anda ingin menginstal tanpa --no-dev untuk testing, hilangkan flag tersebut.
+# 🛑 Tambahkan baris ini untuk menginstal dependensi dan membuat autoload.php
+RUN composer install --no-dev --optimize-autoloader --prefer-dist
 
-# Perbaikan Izin (Penting)
+# Perubahan Kepemilikan dan Izin
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 RUN chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
