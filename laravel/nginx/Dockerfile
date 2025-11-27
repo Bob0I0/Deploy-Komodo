@@ -1,11 +1,11 @@
-# /etc/komodo/repos/Repo/nginx/Dockerfile
 FROM nginx:latest
 
-# Hapus konfigurasi default Nginx
-RUN rm /etc/nginx/conf.d/default.conf
+# Hapus semua konfigurasi default di conf.d
+RUN rm -rf /etc/nginx/conf.d/*
 
-# Salin file konfigurasi yang sudah benar dari host ke dalam image
-# Asumsi default.conf berada di samping Dockerfile ini (yaitu di ./nginx/)
+# Menyalin default.conf kita ke lokasi yang biasa di-include
 COPY default.conf /etc/nginx/conf.d/default.conf
+
+COPY default.conf /etc/nginx/nginx.conf
 
 EXPOSE 80
