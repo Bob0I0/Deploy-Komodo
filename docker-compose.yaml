@@ -1,0 +1,38 @@
+services:
+  app:
+    build: .
+    container_name: laravel_app
+    volumes:
+      - ./src:/var/www
+    networks:
+      - komodo
+
+  mysql:
+    image: mysql:8
+    container_name: laravel_mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - komodo
+
+  nginx:
+    image: nginx:latest
+    container_name: laravel_nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - komodo
+
+volumes:
+  mysql_data:
+
+networks:
+  komodo:
+    external: true
