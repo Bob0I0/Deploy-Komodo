@@ -7,7 +7,9 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./laravel/src:/var/www/html
+      - ./laravel/src:/var/www
+    networks:
+      - komodo
     depends_on:
       - db
     environment:
