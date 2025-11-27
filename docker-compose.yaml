@@ -21,14 +21,14 @@ services:
     ports:
       - "3306:3306"
   
-    phpmyadmin:
-      image: phpmyadmin:latest
-      restart: always
-      ports:
-        - "8001:80"
-      environment:
-        PMA_HOST: db
-        PMA_PORT: 3306
+  phpmyadmin:
+    image: phpmyadmin:latest
+    restart: always
+    ports:
+      - "8001:80"
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
 
   nginx:
     build: 
