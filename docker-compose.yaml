@@ -42,7 +42,7 @@ services:
       - komodo
     depends_on:
       - app
-      - mysql
+      - phpmyadmin
 volumes:
   mysql_data:
 
